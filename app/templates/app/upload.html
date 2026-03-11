@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Загрузка изображения{% endblock %}
+
+{% block content %}
+<div class="card">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.image.label_tag }}
+            {{ form.image }}
+            {% if form.image.errors %}
+                <div class="error">{{ form.image.errors }}</div>
+            {% endif %}
+        </div>
+        <button type="submit" class="btn">Готово</button>
+    </form>
+</div>
+
+{% if prediction %}
+<div class="result-card">
+    <h2>Результат распознавания</h2>
+    <img src="{{ prediction.image.url }}" alt="Загруженный цветок" class="preview-image">
+    <p><strong>Класс:</strong> {{ prediction.predicted_class }}</p>
+    {% if prediction.confidence is not None %}
+        <p><strong>Вероятность:</strong> {{ prediction.confidence|floatformat:2 }}%</p>
+    {% endif %}
+</div>
+{% endif %}
+{% endblock %}
