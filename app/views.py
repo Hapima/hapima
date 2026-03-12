@@ -11,11 +11,15 @@ def upload_image(request):
         from ml.predict import predict_flower
 
         uploaded_obj = form.save(commit=False)
-        predicted_class, confidence = predict_flower(uploaded_obj.image)
-        uploaded_obj.predicted_class = predicted_class
-        uploaded_obj.confidence = confidence
-        uploaded_obj.save()
-        prediction = uploaded_obj
+        try:
+            predicted_class, confidence = predict_flower(uploaded_obj.image)
+        except Exception as exc:
+            form.add_error(None, f'Ошибка инференса: {exc}')
+        else:
+            uploaded_obj.predicted_class = predicted_class
+            uploaded_obj.confidence = confidence
+            uploaded_obj.save()
+            prediction = uploaded_obj
 
     return render(
         request,
