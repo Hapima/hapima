@@ -1,3 +1,4 @@
+from django.db import OperationalError
 from django.shortcuts import render
 
 from .forms import FlowerUploadForm
@@ -13,13 +14,18 @@ def upload_image(request):
         uploaded_obj = form.save(commit=False)
         try:
             predicted_class, confidence = predict_flower(uploaded_obj.image)
-        except Exception as exc:
-            form.add_error(None, f'Ошибка инференса: {exc}')
-        else:
             uploaded_obj.predicted_class = predicted_class
             uploaded_obj.confidence = confidence
             uploaded_obj.save()
             prediction = uploaded_obj
+        except OperationalError:
+            form.add_error(
+                None,
+                'База данных не инициализирована. Выполните: '
+                '`python manage.py makemigrations` и `python manage.py migrate`, затем перезапустите сервер.',
+            )
+        except Exception as exc:
+            form.add_error(None, f'Ошибка инференса: {exc}')
 
     return render(
         request,

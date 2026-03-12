@@ -116,3 +116,22 @@ size mismatch for fc.weight: ... [1000, 512] ... expected [5, 512]
 
 Теперь приложение покажет понятную ошибку на странице вместо падения Django.
 
+
+
+## Частая ошибка: `no such table: app_uploadedflowerimage`
+
+Это означает, что миграции не были применены к базе данных SQLite.
+
+Выполните в терминале из корня проекта:
+
+```bash
+python manage.py makemigrations
+python manage.py migrate
+```
+
+После этого перезапустите сервер:
+
+```bash
+python manage.py runserver
+```
+
