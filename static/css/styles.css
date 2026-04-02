@@ -11,6 +11,25 @@ body {
     padding: 24px;
 }
 
+.topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.auth-links {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.username {
+    font-size: 14px;
+    color: #57606f;
+}
+
 .card,
 .result-card {
     background: #fff;
@@ -36,6 +55,38 @@ body {
 
 .btn:hover {
     background: #3867d6;
+}
+
+.btn-secondary {
+    background: #747d8c;
+}
+
+.btn-secondary:hover {
+    background: #57606f;
+}
+
+a.btn {
+    text-decoration: none;
+    display: inline-block;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 12px;
+    border: 1px solid #dfe4ea;
+    border-radius: 8px;
+    font-size: 15px;
+    margin-top: 4px;
+}
+
+small {
+    display: block;
+    color: #747d8c;
+    margin-top: 4px;
+    font-size: 12px;
 }
 
 .preview-image {

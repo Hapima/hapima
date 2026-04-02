@@ -9,7 +9,21 @@
 </head>
 <body>
 <div class="container">
-    <h1>Распознавание цветков</h1>
+    <div class="topbar">
+        <h1>Распознавание цветков</h1>
+        <div class="auth-links">
+            {% if user.is_authenticated %}
+                <span class="username">Привет, {{ user.username }}!</span>
+                <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-secondary">Выйти</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}" class="btn btn-secondary">Войти</a>
+                <a href="{% url 'signup' %}" class="btn">Регистрация</a>
+            {% endif %}
+        </div>
+    </div>
     {% block content %}{% endblock %}
 </div>
 </body>
