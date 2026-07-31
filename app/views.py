@@ -26,13 +26,20 @@ def upload_image(request):
     form = FlowerUploadForm(request.POST or None, request.FILES or None)
 
     if request.method == 'POST' and form.is_valid():
-        from ml.predict import predict_flower
+        from ml.flower_pipeline import run_flower_pipeline
 
         uploaded_obj = form.save(commit=False)
         try:
-            predicted_class, confidence = predict_flower(uploaded_obj.image)
-            uploaded_obj.predicted_class = predicted_class
-            uploaded_obj.confidence = confidence
+            pipeline_result = run_flower_pipeline(uploaded_obj.image)
+            names = pipeline_result.get('names', {})
+            uploaded_obj.predicted_class = pipeline_result['predicted_class']
+            uploaded_obj.confidence = pipeline_result['confidence']
+            uploaded_obj.name_ru = names.get('ru', uploaded_obj.predicted_class)
+            uploaded_obj.name_en = names.get('en', '')
+            uploaded_obj.name_latin = names.get('latin', '')
+            uploaded_obj.description = pipeline_result.get('description', '')
+            uploaded_obj.confidence_status = pipeline_result.get('confidence_status', '')
+            uploaded_obj.confidence_message = pipeline_result.get('confidence_message', '')
             uploaded_obj.save()
             prediction = uploaded_obj
         except OperationalError:

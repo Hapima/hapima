@@ -27,8 +27,15 @@
     <h2>Результат распознавания</h2>
     <img src="{{ prediction.image.url }}" alt="Загруженный цветок" class="preview-image">
     <p><strong>Класс:</strong> {{ prediction.predicted_class }}</p>
+    <p><strong>RU:</strong> {{ prediction.name_ru }}</p>
+    <p><strong>EN:</strong> {{ prediction.name_en }}</p>
+    <p><strong>Latin:</strong> <em>{{ prediction.name_latin }}</em></p>
+    <p><strong>Описание:</strong> {{ prediction.description }}</p>
     {% if prediction.confidence is not None %}
         <p><strong>Вероятность:</strong> {{ prediction.confidence|floatformat:2 }}%</p>
+    {% endif %}
+    {% if prediction.confidence_message %}
+        <p><strong>Проверка уверенности:</strong> {{ prediction.confidence_message }}</p>
     {% endif %}
 </div>
 {% endif %}
